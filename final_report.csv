@@ -1,0 +1,42 @@
+station_id,timestamp,attribution,flagged_by_rule,flagged_by_physics,flagged_by_neighbor,flagged_by_ml,confidence_%,trust_state,alert_priority,corrected_value
+ST02,2026-08-29 00:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"7.7mm to 10.1mm (estimated, not confirmed)"
+ST02,2026-08-28 08:00:00,Sensor fault,True,False,False,False,25,ACCEPT,LOW - log only,
+ST02,2026-08-29 01:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"6.8mm to 10.3mm (estimated, not confirmed)"
+ST03,2026-08-28 23:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"8.0mm to 11.5mm (estimated, not confirmed)"
+ST03,2026-08-29 06:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"5.8mm to 6.8mm (estimated, not confirmed)"
+ST03,2026-08-29 05:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST03,2026-08-29 03:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"6.7mm to 7.2mm (estimated, not confirmed)"
+ST04,2026-08-28 23:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"9.0mm to 11.5mm (estimated, not confirmed)"
+ST04,2026-08-29 07:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST04,2026-08-29 01:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"7.2mm to 11.3mm (estimated, not confirmed)"
+ST04,2026-08-29 03:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST04,2026-08-29 04:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST04,2026-08-28 17:00:00,Silent station,True,False,False,False,25,REJECT,LOW - log only,
+ST04,2026-08-29 06:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST04,2026-08-28 04:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST04,2026-08-29 05:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST04,2026-08-28 19:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST05,2026-08-28 12:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST05,2026-08-28 23:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"5.2mm to 6.5mm (estimated, not confirmed)"
+ST05,2026-08-28 21:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST05,2026-08-28 03:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST05,2026-08-29 01:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"5.1mm to 6.9mm (estimated, not confirmed)"
+ST06,2026-08-29 00:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"5.7mm to 6.2mm (estimated, not confirmed)"
+ST07,2026-08-28 20:00:00,Sensor fault,True,False,False,False,25,ACCEPT,LOW - log only,
+ST08,2026-08-28 21:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST08,2026-08-29 06:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"5.7mm to 7.3mm (estimated, not confirmed)"
+ST08,2026-08-28 12:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST08,2026-08-28 23:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST08,2026-08-29 00:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST08,2026-08-29 02:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST08,2026-08-29 01:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST09,2026-08-29 01:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST09,2026-08-28 18:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST09,2026-08-29 02:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST09,2026-08-29 00:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST09,2026-08-28 05:00:00,Sensor fault,True,False,False,False,25,ACCEPT,LOW - log only,
+ST09,2026-08-29 03:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"6.5mm to 7.2mm (estimated, not confirmed)"
+ST09,2026-08-28 23:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST09,2026-08-29 06:00:00,Possible tampering,False,False,True,False,25,ACCEPT,LOW - log only,"5.7mm to 7.2mm (estimated, not confirmed)"
+ST10,2026-08-28 19:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,
+ST10,2026-08-29 07:00:00,ML-detected anomaly (needs review),False,False,False,True,25,ACCEPT,LOW - log only,

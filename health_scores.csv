@@ -1,0 +1,31 @@
+station_id,health_score,run_date,remaining_life_prediction
+ST04,64.9,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST09,80.8,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST08,81.4,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST05,83.3,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST10,85.9,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST03,85.9,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST02,86.5,2026-09-04 09:36:19,"At current decline rate, estimated 5743249284748046 day(s) until maintenance needed"
+ST07,87.0,2026-09-04 09:36:19,"At current decline rate, estimated 5821923932484321 day(s) until maintenance needed"
+ST06,87.2,2026-09-04 09:36:19,Stable or improving - no maintenance predicted based on current trend
+ST01,88.4,2026-09-04 09:36:19,"At current decline rate, estimated 3021106473072945 day(s) until maintenance needed"
+ST04,64.9,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST09,80.8,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST08,81.4,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST05,83.3,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST10,85.9,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST03,85.9,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST02,86.5,2026-09-04 15:21:35,"At current decline rate, estimated 5743249284748046 day(s) until maintenance needed"
+ST07,87.0,2026-09-04 15:21:35,"At current decline rate, estimated 5821923932484321 day(s) until maintenance needed"
+ST06,87.2,2026-09-04 15:21:35,Stable or improving - no maintenance predicted based on current trend
+ST01,88.4,2026-09-04 15:21:35,"At current decline rate, estimated 3021106473072945 day(s) until maintenance needed"
+ST04,64.9,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST09,80.8,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST08,81.4,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST05,83.3,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST03,85.9,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST10,85.9,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST02,86.5,2026-09-04 18:07:49,"At current decline rate, estimated 5743249284748046 day(s) until maintenance needed"
+ST07,87.0,2026-09-04 18:07:49,"At current decline rate, estimated 5821923932484321 day(s) until maintenance needed"
+ST06,87.2,2026-09-04 18:07:49,Stable or improving - no maintenance predicted based on current trend
+ST01,88.4,2026-09-04 18:07:49,"At current decline rate, estimated 3021106473072945 day(s) until maintenance needed"

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Anomaly Detection Dashboard</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+<style>
+  body { 
+    font-family: 'Segoe UI', Arial, sans-serif; 
+    background: url('bg_moderate.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+  }
+
+  .navy { background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(8px); }
+  .navy-text { color:#1a1a1a; }
+  .amber { background:#F5A623; }
+  .amber-text { color:#F5A623; }
+  .badge-accept { background:#DCFCE7; color:#166534; }
+  .badge-caution { background:#FEF3C7; color:#92400E; }
+  .badge-quarantine { background:#FFEDD5; color:#9A3412; }
+  .badge-reject { background:#FEE2E2; color:#991B1B; }
+  .fade-in { animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN SCREEN ===================== -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center">
+  <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-md rounded-xl shadow-2xl border border-white border-opacity-50 p-8 w-full max-w-sm fade-in">
+    <div class="text-center mb-6">
+      <div class="text-xs font-semibold amber-text tracking-widest mb-1">MINISTRY OF EARTH SCIENCES</div>
+      <h1 class="text-xl font-bold text-gray-900 tracking-wide">AWS Anomaly Detection</h1>
+      <p class="text-sm text-gray-700 mt-1">Sign in to continue</p>
+    </div>
+    <div id="loginError" class="hidden bg-red-50 text-red-700 text-sm rounded p-2 mb-3"></div>
+    <input id="username" placeholder="Username" class="w-full bg-white bg-opacity-20 text-gray-900 placeholder-gray-600 border border-gray-400 rounded px-3 py-2 mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <input id="password" type="password" placeholder="Password" class="w-full bg-white bg-opacity-20 text-gray-900 placeholder-gray-600 border border-gray-400 rounded px-3 py-2 mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <button onclick="doLogin()" class="w-full bg-blue-600 text-white rounded py-2 font-medium text-sm hover:bg-blue-700 transition shadow">Sign In</button>
+  </div>
+</div>
+
+<!-- ===================== MAIN DASHBOARD ===================== -->
+<div id="mainScreen" class="hidden min-h-screen">
+
+  <header class="navy text-white px-6 py-4 flex items-center justify-between shadow-lg">
+    <div>
+      <div class="text-xs amber-text font-semibold tracking-widest">MINISTRY OF EARTH SCIENCES</div>
+      <div class="font-bold text-lg tracking-wide">AWS Anomaly Detection Dashboard</div>
+    </div>
+    <div class="flex items-center gap-4 text-sm">
+      <div class="flex items-center gap-2">
+        <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-gray-400"></span>
+        <span id="statusText" class="text-gray-200">Checking system...</span>
+      </div>
+      <div id="userBadge" class="bg-white bg-opacity-10 rounded px-3 py-1"></div>
+      <button onclick="logout()" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded px-3 py-1">Sign out</button>
+    </div>
+  </header>
+
+  <nav class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-md border-b px-6 flex gap-1 text-sm">
+    <button class="tab-btn px-4 py-3 border-b-2 border-transparent font-medium" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+    <button class="tab-btn px-4 py-3 border-b-2 border-transparent font-medium" data-tab="anomalies" onclick="switchTab('anomalies')">Anomalies</button>
+    <button class="tab-btn px-4 py-3 border-b-2 border-transparent font-medium" data-tab="health" onclick="switchTab('health')">Station Health</button>
+    <button class="tab-btn px-4 py-3 border-b-2 border-transparent font-medium" data-tab="about" onclick="switchTab('about')">About / Research</button>
+  </nav>
+
+  <main class="p-6 max-w-6xl mx-auto">
+
+    <!-- OVERVIEW TAB -->
+    <section id="tab-overview" class="tab-content fade-in">
+      <div id="kpiCards" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"></div>
+      <div class="bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-white border-opacity-20 rounded-xl shadow-xl p-5">
+        <h2 class="font-semibold navy-text mb-3">Recent anomalies (top 10 by confidence)</h2>
+        <div id="overviewTable" class="overflow-x-auto"></div>
+      </div>
+    </section>
+
+    <!-- ANOMALIES TAB -->
+    <section id="tab-anomalies" class="tab-content hidden fade-in">
+      <div class="bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-white border-opacity-20 rounded-xl shadow-xl p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold navy-text">All anomalies visible to your role</h2>
+          <span id="anomalyCount" class="text-sm text-gray-500"></span>
+        </div>
+        <div id="anomalyTable" class="overflow-x-auto"></div>
+      </div>
+    </section>
+
+    <!-- HEALTH TAB -->
+    <section id="tab-health" class="tab-content hidden fade-in">
+      <div class="bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-white border-opacity-20 rounded-xl shadow-xl p-5">
+        <h2 class="font-semibold navy-text mb-3">Station health scores</h2>
+        <p class="text-xs text-gray-500 mb-3">Multi-factor score: anomaly frequency, data completeness, sensor variance, communication reliability.</p>
+        <div id="healthTable" class="overflow-x-auto"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT TAB -->
+    <section id="tab-about" class="tab-content hidden fade-in">
+      <div class="bg-white bg-opacity-95 backdrop-filter backdrop-blur-md border border-white border-opacity-20 rounded-xl shadow-xl p-5">
+        <h2 class="font-semibold navy-text mb-3">How we compare to existing systems</h2>
+        <div id="comparisonTable" class="overflow-x-auto"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+const API = "";
+let currentUser = null;
+
+function showError(msg) {
+  const el = document.getElementById("loginError");
+  el.textContent = msg;
+  el.classList.remove("hidden");
+}
+
+async function doLogin() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  try {
+    const res = await fetch(API + "/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+    if (!res.ok) { showError("Invalid username or password."); return; }
+    currentUser = await res.json();
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("mainScreen").classList.remove("hidden");
+    document.getElementById("userBadge").textContent = `${currentUser.name} · ${currentUser.role}`;
+    switchTab("overview");
+    loadSystemStatus();
+  } catch (e) {
+    showError("Could not reach the server. Is api.py running?");
+  }
+}
+
+function logout() {
+  currentUser = null;
+  document.getElementById("mainScreen").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+}
+
+function trustBadge(state) {
+  const map = { ACCEPT: "badge-accept", CAUTION: "badge-caution", QUARANTINE: "badge-quarantine", REJECT: "badge-reject" };
+  const cls = map[state] || "badge-caution";
+  return `<span class="text-xs font-medium px-2 py-0.5 rounded ${cls}">${state || "-"}</span>`;
+}
+
+function buildTable(rows, columns) {
+  if (!rows || rows.length === 0) return `<p class="text-sm text-gray-400 py-4">No items to show.</p>`;
+  let thead = columns.map(c => `<th class="text-left px-3 py-2 text-xs text-gray-500 font-semibold">${c.label}</th>`).join("");
+  let tbody = rows.map(r => {
+    let cells = columns.map(c => `<td class="px-3 py-2 text-sm border-t">${c.render ? c.render(r) : (r[c.key] ?? "-")}</td>`).join("");
+    return `<tr class="hover:bg-gray-50">${cells}</tr>`;
+  }).join("");
+  return `<table class="w-full"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
+}
+
+async function loadSystemStatus() {
+  try {
+    const res = await fetch(API + "/api/system-status");
+    const data = await res.json();
+    const dot = document.getElementById("statusDot");
+    const text = document.getElementById("statusText");
+    if (data.status === "ok") {
+      dot.className = "w-2.5 h-2.5 rounded-full bg-green-400";
+      text.textContent = "All systems operational";
+    } else {
+      dot.className = "w-2.5 h-2.5 rounded-full bg-red-400";
+      text.textContent = "Pipeline not yet run - see README";
+    }
+  } catch (e) {
+    document.getElementById("statusText").textContent = "Cannot reach API";
+  }
+}
+
+async function fetchAnomalies() {
+  const params = new URLSearchParams({ role: currentUser.role });
+  if (currentUser.region) params.set("region", currentUser.region);
+  const res = await fetch(API + "/api/anomalies?" + params.toString());
+  return res.json();
+}
+
+const anomalyColumns = [
+  { key: "station_id", label: "Station" },
+  { key: "timestamp", label: "Time" },
+  { key: "attribution", label: "Issue" },
+  { key: "confidence_%", label: "Confidence", render: r => `${r["confidence_%"]}%` },
+  { key: "trust_state", label: "Trust State", render: r => trustBadge(r.trust_state) },
+  { key: "corrected_value", label: "Corrected Estimate", render: r => r.corrected_value || "-" },
+];
+
+async function loadOverview() {
+  const anomalies = await fetchAnomalies();
+  const health = await (await fetch(API + "/api/health-scores")).json();
+
+  const total = anomalies.length;
+  const critical = anomalies.filter(a => a.trust_state === "QUARANTINE" || a.trust_state === "REJECT").length;
+  const avgHealth = health.length ? (health.reduce((s, h) => s + h.health_score, 0) / health.length).toFixed(1) : "-";
+  const worstStation = health.length ? health.reduce((a, b) => a.health_score < b.health_score ? a : b) : null;
+
+  const cardCls = "bg-white bg-opacity-95 backdrop-filter backdrop-blur-md rounded-xl shadow border border-white border-opacity-20 p-4";
+  document.getElementById("kpiCards").innerHTML = `
+    <div class="${cardCls}"><div class="text-xs text-gray-500">Total anomalies (your view)</div><div class="text-2xl font-bold navy-text">${total}</div></div>
+    <div class="${cardCls}"><div class="text-xs text-gray-500">Needs attention</div><div class="text-2xl font-bold text-red-600">${critical}</div></div>
+    <div class="${cardCls}"><div class="text-xs text-gray-500">Avg. station health</div><div class="text-2xl font-bold navy-text">${avgHealth}</div></div>
+    <div class="${cardCls}"><div class="text-xs text-gray-500">Lowest health station</div><div class="text-2xl font-bold text-amber-600">${worstStation ? worstStation.station_id : "-"}</div></div>
+  `;
+
+  const top10 = [...anomalies].sort((a, b) => b["confidence_%"] - a["confidence_%"]).slice(0, 10);
+  document.getElementById("overviewTable").innerHTML = buildTable(top10, anomalyColumns);
+}
+
+async function loadAnomalies() {
+  const anomalies = await fetchAnomalies();
+  document.getElementById("anomalyCount").textContent = `${anomalies.length} item(s)`;
+  document.getElementById("anomalyTable").innerHTML = buildTable(anomalies, anomalyColumns);
+}
+
+async function loadHealth() {
+  const health = await (await fetch(API + "/api/health-scores")).json();
+  const cols = [
+    { key: "station_id", label: "Station" },
+    { key: "health_score", label: "Score" },
+    { key: "status", label: "Status" },
+    { key: "anomaly_frequency_score", label: "Anomaly Freq." },
+    { key: "data_completeness_score", label: "Completeness" },
+    { key: "sensor_variance_score", label: "Sensor Noise" },
+    { key: "communication_score", label: "Comm. Reliability" },
+    { key: "remaining_life_prediction", label: "Prediction" },
+  ];
+  document.getElementById("healthTable").innerHTML = buildTable(health, cols);
+}
+
+async function loadComparison() {
+  try {
+    const data = await (await fetch(API + "/api/comparison")).json();
+    const rows = Array.isArray(data) ? data : (data.existing_systems || data.systems || []);
+    if (!rows.length) {
+      document.getElementById("comparisonTable").innerHTML = `<p class="text-sm text-gray-400">comparison_data.json not found or empty.</p>`;
+      return;
+    }
+    const cols = Object.keys(rows[0]).map(k => ({ key: k, label: k.replace(/_/g, " ") }));
+    document.getElementById("comparisonTable").innerHTML = buildTable(rows, cols);
+  } catch (e) {
+    document.getElementById("comparisonTable").innerHTML = `<p class="text-sm text-gray-400">Could not load comparison data.</p>`;
+  }
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+  document.getElementById("tab-" + tab).classList.remove("hidden");
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("border-blue-600", "navy-text"));
+  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add("border-blue-600", "navy-text");
+
+  if (tab === "overview") loadOverview();
+  if (tab === "anomalies") loadAnomalies();
+  if (tab === "health") loadHealth();
+  if (tab === "about") loadComparison();
+}
+</script>
+</body>
+</html>
